@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Pokedex",
-    "slug": "Pokedex",
-    "version": "1.0.0",
+    "name": "Pokedex-V2",
+    "slug": "Pokedex-V2",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
