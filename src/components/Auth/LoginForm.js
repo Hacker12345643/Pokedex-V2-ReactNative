@@ -6,26 +6,30 @@ import {
   Button,
   Keyboard,
 } from "react-native";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik"; //Para hacer formularios como el logForm
-import * as Yup from "yup";         //Para validar los datos de entrada del formulario
-import {user, userDetails} from "../../utils/userDB";
+import * as Yup from "yup"; //Para validar los datos de entrada del formulario
+import { user, userDetails } from "../../utils/userDB";
+import useAuth from "../../hooks/useAuth";
 
 export default function LoginForm() {
-  const [error, setError]=useState("");
+  const [error, setError] = useState("");
+  const { login } = useAuth();
+
+  //console.log(useAuth().user);
 
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: Yup.object(validationSchema()),
     validateOnChange: false,
     onSubmit: (formValue) => {
-      setError('')
-      const {username, password} =formValue;
-      if(username !==user.username || password !== user.password){
-        setError('El usuario o contraseña no son correctos')
+      setError("");
+      const { username, password } = formValue;
+      if (username !== user.username || password !== user.password) {
+        setError("El usuario o contraseña no son correctos");
         console.log("El usuario o contraseña no son correctos");
-      }
-      else {
+      } else {
+        login(userDetails);
         console.log("Usuario correcto");
         console.log(userDetails);
       }
@@ -40,7 +44,7 @@ export default function LoginForm() {
         style={styles.input}
         autoCapitalize="none"
         value={formik.values.username}
-        onChangeText={(text)=> formik.setFieldValue('username',text)}
+        onChangeText={(text) => formik.setFieldValue("username", text)}
       />
       <TextInput
         placeholder="Contraseña"
@@ -48,7 +52,7 @@ export default function LoginForm() {
         autoCapitalize="none"
         secureTextEntry={true}
         value={formik.values.password}
-        onChangeText={(text)=> formik.setFieldValue('password',text)}
+        onChangeText={(text) => formik.setFieldValue("password", text)}
       />
       <Button title="Entrar" onPress={formik.handleSubmit} />
 
@@ -66,11 +70,11 @@ function initialValues() {
   };
 }
 
-function validationSchema(){
-  return{
+function validationSchema() {
+  return {
     username: Yup.string().required("Ingresa el usuario"),
     password: Yup.string().required("Ingresa la contraseña"),
-  }
+  };
 }
 
 const styles = StyleSheet.create({
@@ -88,9 +92,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
-  error:{
+  error: {
     textAlign: "center",
     color: "#f00",
-    marginTop:20
-  }
+    marginTop: 20,
+  },
 });
